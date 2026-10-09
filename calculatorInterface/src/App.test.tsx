@@ -6,28 +6,28 @@ import App from './App';
 
 globalThis.fetch = vi.fn();
 
-describe('App Component - Interface & Interações', () => {
+describe('App Component - Interface & Interactions', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  // Limpa o DOM após cada teste para que um componente não interfira no outro
+  // Cleans up the DOM after each test so that one component does not interfere with another.
   afterEach(() => {
     cleanup();
   });
 
-  test('deve renderizar a calculadora padrão por padrão', () => {
+  test('should render the standard calculator by default', () => {
     render(<App />);
 
     expect(screen.getByText('Default')).toBeInTheDocument();
     expect(screen.getByText('⚙️ Manual Mode')).toBeInTheDocument();
     
-    // getAllByText retorna um array. Pegamos o primeiro item (ou apenas checamos se existe mais de 0)
-    // pois há o "0" no visor e o "0" no botão.
+    // getAllByText returns an array. We take the first item (or simply check if there is more than 0)
+    // because there is the "0" on the display and the "0" on the button.
     expect(screen.getAllByText('0').length).toBeGreaterThan(0);
   });
 
-  test('deve atualizar o visor ao clicar nos botões numéricos', async () => {
+  test('It should update the display when the numeric buttons are clicked.', async () => {
     const user = userEvent.setup();
     render(<App />);
 
@@ -42,7 +42,7 @@ describe('App Component - Interface & Interações', () => {
     expect(screen.getByText('5+3')).toBeInTheDocument();
   });
 
-  test('deve limpar o visor ao clicar no botão "C"', async () => {
+  test('It should clear the display when the "C" button is clicked.', async () => {
     const user = userEvent.setup();
     render(<App />);
 
@@ -50,15 +50,15 @@ describe('App Component - Interface & Interações', () => {
     const btnC = screen.getByRole('button', { name: 'C' });
 
     await user.click(btn9);
-    // Deve haver 2 elementos com "9": O visor e o botão
+    // There must be 2 elements with "9": the display and the button.
     expect(screen.getAllByText('9').length).toBe(2);
 
     await user.click(btnC);
-    // Deve haver 2 elementos com "0" novamente: O visor limpo e o botão
+    // There must be 2 elements with "0" again: the clean display and the button.
     expect(screen.getAllByText('0').length).toBeGreaterThan(0);
   });
 
-  test('deve alternar para o modo manual e voltar para o padrão', async () => {
+  test('must switch to manual mode and return to default', async () => {
     const user = userEvent.setup();
     render(<App />);
 
@@ -66,18 +66,18 @@ describe('App Component - Interface & Interações', () => {
     await user.click(toggleBtn);
 
     expect(screen.getByText('Manual')).toBeInTheDocument();
-    // Apenas verifica se as labels em formato de texto estão na tela
+    // It simply checks if the text-format labels are on the screen.
     expect(screen.getByText('Operation:')).toBeInTheDocument();
     expect(screen.getByText('Value A:')).toBeInTheDocument();
 
-    // Volta para o modo padrão
+    // Return to standard mode
     const toggleBackBtn = screen.getByRole('button', { name: '🔢 Calculator' });
     await user.click(toggleBackBtn);
 
     expect(screen.getByText('Default')).toBeInTheDocument();
   });
 
-  test('deve disparar cálculo na API no modo padrão ao clicar em "="', async () => {
+  test('should trigger the calculation in the API in standard mode when clicking "="', async () => {
     const user = userEvent.setup();
     (globalThis.fetch as any).mockResolvedValueOnce({
       ok: true,
@@ -103,7 +103,7 @@ describe('App Component - Interface & Interações', () => {
     });
   });
 
-  test('deve calcular corretamente via formulário no Modo Manual', async () => {
+  test('must calculate correctly via the form in Manual Mode', async () => {
     const user = userEvent.setup();
     (globalThis.fetch as any).mockResolvedValueOnce({
       ok: true,
@@ -114,7 +114,7 @@ describe('App Component - Interface & Interações', () => {
 
     await user.click(screen.getByRole('button', { name: '⚙️ Manual Mode' }));
 
-    // Busca os inputs pelos placeholders, já que não possuem id associado às labels
+    // Locate the inputs using the placeholders, since they do not have IDs associated with the labels.
     const inputA = screen.getByPlaceholderText('Ex: 10');
     const inputB = screen.getByPlaceholderText('Ex: 5');
     const submitBtn = screen.getByRole('button', { name: 'Calculate' });
@@ -128,7 +128,7 @@ describe('App Component - Interface & Interações', () => {
     });
   });
 
-  test('deve exibir mensagem de erro retornada pela API', async () => {
+  test('must display the error message returned by the API', async () => {
     const user = userEvent.setup();
     (globalThis.fetch as any).mockResolvedValueOnce({
       ok: false,
