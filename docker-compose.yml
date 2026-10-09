@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./calculatorAPI
+      dockerfile: Dockerfile
+    container_name: calculator_api
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+
+  frontend:
+    build:
+      context: ./calculatorInterface
+      dockerfile: Dockerfile
+    container_name: calculator_interface
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
