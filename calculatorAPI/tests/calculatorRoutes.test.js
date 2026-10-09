@@ -2,7 +2,7 @@ import request from 'supertest';
 import { describe, test, expect } from 'vitest';
 import { app } from '../src/index.js';
 
-describe('Calculator API - Integração (Routes + Controller + Service)', () => {
+describe('Calculator API - Integration (Routes + Controller + Service)', () => {
   test('GET /health must respond with status 200', async () => {
     const response = await request(app).get('/health');
     expect(response.status).toBe(200);
