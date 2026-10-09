@@ -1,0 +1,74 @@
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+.env
+.env.*
+!.env.example
+
+# ==============================================================================
+# FRONTEND (Ex: React, Vue, Angular, Next.js)
+# ==============================================================================
+# Se o front estiver na raiz, use apenas o nome da pasta. 
+# Se estiver subversionado (ex: /frontend), ajuste os caminhos:
+
+node_modules/
+frontend/node_modules/
+
+# Builds e Distribuição
+dist/
+frontend/dist/
+build/
+frontend/build/
+.next/
+frontend/.next/
+out/
+
+# Caches e logs do ecossistema Frontend
+.eslintcache
+.npm/
+.yarn/
+*.tsbuildinfo
+
+# ==============================================================================
+# BACKEND
+# ==============================================================================
+# Ajuste as pastas caso seu backend esteja em uma subpasta (ex: /backend/node_modules)
+
+# Node.js Backend (se aplicável)
+backend/node_modules/
+
+# Python (Django / Flask / FastAPI)
+__pycache__/
+*.pyc
+.venv/
+backend/.venv/
+env/
+backend/env/
+.pytest_cache/
+
+# Java (Maven / Gradle)
+target/
+backend/target/
+.gradle/
+build/
+backend/build/
+
+# PHP (Composer)
+vendor/
+backend/vendor/
+
+# C# (.NET)
+bin/
+obj/
+backend/bin/
+backend/obj/
+
+# ==============================================================================
+# BANCO DE DADOS LOCAL (Se você rodar arquivos de banco no projeto)
+# ==============================================================================
+*.sqlite
+*.sqlite3
+/postgres_data/
+/mysql_data/
