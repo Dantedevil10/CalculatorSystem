@@ -47,7 +47,7 @@ docker-compose up --build
 ## 💻 Manual Setup & Local Execution
 Prerequisites
 
-- Node.js (v18, v20, or v22)
+- Node.js V24
 
 - npm
 
