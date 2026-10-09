@@ -1,10 +1,10 @@
+import { describe, test, expect, beforeEach, vi } from 'vitest';
 import { handleCalculate } from '../src/controllers/calculatorController.js';
 import * as calculatorService from '../src/services/calculatorService.js';
-import { describe, test, expect, beforeEach, vi } from 'vitest';
 
 vi.mock('../src/services/calculatorService.js');
 
-describe('Calculator Controller - Unidade', () => {
+describe('Calculator Controller - Unit', () => {
   let req, res;
 
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe('Calculator Controller - Unidade', () => {
     vi.clearAllMocks();
   });
 
-  test('deve retornar 200 e o resultado para uma expressão válida', () => {
+  test('should return 200 and the result for a valid expression', () => {
     req.body = { expression: '10 + 5' };
     calculatorService.evaluateExpression.mockReturnValue(15);
 
@@ -26,7 +26,7 @@ describe('Calculator Controller - Unidade', () => {
     expect(res.json).toHaveBeenCalledWith({ expression: '10 + 5', result: 15 });
   });
 
-  test('deve retornar 200 e o resultado para uma operação de objeto válida', () => {
+  test('should return 200 and the result for a valid object operation', () => {
     req.body = { operation: 'add', a: 10, b: 5 };
     calculatorService.executeOperation.mockReturnValue(15);
 
@@ -36,24 +36,24 @@ describe('Calculator Controller - Unidade', () => {
     expect(res.json).toHaveBeenCalledWith({ operation: 'add', a: 10, b: 5, result: 15 });
   });
 
-  test('deve retornar status 400 se nenhum dado válido for enviado', () => {
+  test('should return a 400 status if no valid data is sent', () => {
     req.body = {};
 
     handleCalculate(req, res);
 
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Informe uma expressão ou uma operação válida.' });
+    expect(res.json).toHaveBeenCalledWith({ error: 'Enter a valid expression or operation.' });
   });
 
-  test('deve capturar erro lançado pelo service e retornar status 400', () => {
+  test('It must catch the error thrown by the service and return a 400 status.', () => {
     req.body = { expression: '10 / 0' };
     calculatorService.evaluateExpression.mockImplementation(() => {
-      throw new Error('Divisão por zero não é permitida.');
+      throw new Error('Division by zero is not allowed.');
     });
 
     handleCalculate(req, res);
 
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Divisão por zero não é permitida.' });
+    expect(res.json).toHaveBeenCalledWith({ error: 'Division by zero is not allowed.' });
   });
 });
