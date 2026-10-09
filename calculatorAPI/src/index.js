@@ -6,7 +6,7 @@ import calculatorRoutes from './routes/calculatorRoutes.js';
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(helmet());
@@ -21,6 +21,8 @@ app.get('/health', (req, res) => {
 // Agrupamento de rotas sob o prefixo /api
 app.use('/api', calculatorRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on Port:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Server running on Port:${PORT}`);
+  });
+}
