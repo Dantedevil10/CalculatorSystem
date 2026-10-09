@@ -11,8 +11,8 @@ export default function App() {
   const [loading, setLoading] = useState<boolean>(false);
 
   // Manual mode states
-  const [manualA, setManualA] = useState<string>('');
-  const [manualB, setManualB] = useState<string>('');
+  const [numberA, setNumberA] = useState<string>('');
+  const [numberB, setNumberB] = useState<string>('');
   const [operation, setOperation] = useState<string>('add');
 
   const toggleMode = () => {
@@ -45,18 +45,18 @@ export default function App() {
     }
   };
 
-  // Dispara a requisição de expressão para a API (Modo Padrão)
+  // Triggers the expression request to the API (Standard Mode)
   const handleCalculateStandard = async () => {
     setLoading(true);
     setError(null);
     try {
       let formattedExpression = display.replace(/√/g, 'sqrt');
 
-      // Conta parênteses abertos e fechados
+      // Counts open and closed parentheses
       const openParentheses = (formattedExpression.match(/\(/g) || []).length;
       const closeParentheses = (formattedExpression.match(/\)/g) || []).length;
 
-      // Adiciona os parênteses faltantes ao final
+      // Adds the missing parentheses at the end.
       if (openParentheses > closeParentheses) {
         formattedExpression += ')'.repeat(openParentheses - closeParentheses);
       }
@@ -70,7 +70,7 @@ export default function App() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Erro na requisição');
+        throw new Error(data.error || 'Request error');
       }
 
       setResult(data.result);
@@ -82,7 +82,7 @@ export default function App() {
     }
   };
 
-  // Dispara a requisição manual com operação e valores (Modo Manual)
+  // Triggers the manual request with operation and values ​​(Manual Mode)
   const handleCalculateManual = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -95,15 +95,15 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           operation,
-          a: Number(manualA),
-          b: operation === 'sqrt' ? undefined : Number(manualB),
+          a: Number(numberA),
+          b: operation === 'sqrt' ? undefined : Number(numberB),
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Erro ao processar cálculo');
+        throw new Error(data.error || 'Error processing calculation');
       }
 
       setResult(data.result);
@@ -119,17 +119,17 @@ export default function App() {
       <div className="calculator-card">
         <div className="header-bar">
           <button className="mode-toggle-btn" onClick={toggleMode}>
-            {mode === 'standard' ? '⚙️ Modo Manual' : '🔢 Calculadora'}
+            {mode === 'standard' ? '⚙️ Manual Mode' : '🔢 Calculator'}
           </button>
-          <span className="app-title">{mode === 'standard' ? 'Padrão' : 'Manual'}</span>
+          <span className="app-title">{mode === 'standard' ? 'Default' : 'Manual'}</span>
         </div>
 
         {mode === 'standard' ? (
-          /* MODO CALCULADORA PADRÃO COM TODAS AS OPERAÇÕES */
+          /* Standard calculator mode with all operations */
           <div className="standard-calculator">
             <div className="display-container">
               {error && <div className="error-badge">{error}</div>}
-              <div className="display-text">{loading ? 'Calculando...' : display}</div>
+              <div className="display-text">{loading ? 'Calculating...' : display}</div>
             </div>
 
             <div className="keypad">
@@ -165,56 +165,56 @@ export default function App() {
             </div>
           </div>
         ) : (
-          /* MODO INPUT MANUAL */
+          /* MANUAL INPUT MODE */
           <form className="manual-calculator" onSubmit={handleCalculateManual}>
             <div className="form-group">
-              <label>Operação:</label>
+              <label>Operation:</label>
               <select value={operation} onChange={(e: ChangeEvent<HTMLSelectElement>) => setOperation(e.target.value)}>
-                <option value="add">Adição (+)</option>
-                <option value="subtract">Subtração (-)</option>
-                <option value="multiply">Multiplicação (*)</option>
-                <option value="divide">Divisão (/)</option>
-                <option value="power">Potência (^)</option>
-                <option value="sqrt">Raiz Quadrada (√)</option>
-                <option value="percentage">Porcentagem (%)</option>
+                <option value="add">Addition (+)</option>
+                <option value="subtract">Subtraction (-)</option>
+                <option value="multiply">Multiplication (*)</option>
+                <option value="divide">Division (/)</option>
+                <option value="power">Power (^)</option>
+                <option value="sqrt">Square Root (√)</option>
+                <option value="percentage">Percentage (%)</option>
               </select>
             </div>
 
             <div className="form-group">
-              <label>Valor A:</label>
+              <label>Value A:</label>
               <input
                 type="number"
                 step="any"
                 required
-                value={manualA}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setManualA(e.target.value)}
+                value={numberA}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setNumberA(e.target.value)}
                 placeholder="Ex: 10"
               />
             </div>
 
             {operation !== 'sqrt' && (
               <div className="form-group">
-                <label>Valor B:</label>
+                <label>Value B:</label>
                 <input
                   type="number"
                   step="any"
                   required
-                  value={manualB}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => setManualB(e.target.value)}
+                  value={numberB}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setNumberB(e.target.value)}
                   placeholder="Ex: 5"
                 />
               </div>
             )}
 
             <button type="submit" className="btn-submit" disabled={loading}>
-              {loading ? 'Processando...' : 'Calcular'}
+              {loading ? 'Processing...' : 'Calculate'}
             </button>
 
             {error && <div className="error-box">{error}</div>}
 
             {result !== null && (
               <div className="result-box">
-                <span>Resultado:</span>
+                <span>Result:</span>
                 <strong>{result}</strong>
               </div>
             )}
