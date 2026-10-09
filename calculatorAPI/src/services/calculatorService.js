@@ -4,36 +4,36 @@ export const add = (a, b) => a + b;
 export const subtract = (a, b) => a - b;
 export const multiply = (a, b) => a * b;
 export const divide = (a, b) => {
-  if (b === 0) throw new Error('Divisão por zero não é permitida.');
+  if (b === 0) throw new Error('Division by zero is not allowed.');
   return a / b;
 };
 export const power = (a, b) => Math.pow(a, b);
 export const sqrt = (a) => {
-  if (a < 0) throw new Error('Não é possível calcular raiz quadrada de número negativo.');
+  if (a < 0) throw new Error('It is not possible to calculate the square root of a negative number.');
   return Math.sqrt(a);
 };
 export const percentage = (a, b) => (a * b) / 100;
 
-// Avalia expressões matemáticas em formato textual (ex: "2-5(1/3)(5+8)")
+// Evaluates mathematical expressions in text format (ex: "2-5(1/3)(5+8)")
 export const evaluateExpression = (expression) => {
   if (!expression || typeof expression !== 'string') {
-    throw new Error('Expressão inválida.');
+    throw new Error('Invalid expression.');
   }
 
   try {
     const result = evaluate(expression);
 
     if (typeof result !== 'number' || !isFinite(result)) {
-      throw new Error('Resultado indeterminado ou inválido.');
+      throw new Error('Indeterminate or invalid result.');
     }
 
     return result;
   } catch (error) {
-    throw new Error('Sintaxe da expressão matemática inválida.');
+    throw new Error('Invalid mathematical expression syntax.');
   }
 };
 
-//mapeamento para execução dinamica
+//mapping for dynamic execution
 const operationsMap = {
   add,
   subtract,
@@ -48,11 +48,11 @@ export const executeOperation = (operation, a, b) => {
   const serviceFunc = operationsMap[operation];
 
   if (!serviceFunc) {
-    throw new Error('Operação não suportada.');
+    throw new Error('Operation not supported.');
   }
 
   if (typeof a !== 'number' || (operation !== 'sqrt' && typeof b !== 'number')) {
-    throw new Error('Parâmetros numéricos inválidos.');
+    throw new Error('Invalid numeric parameters.');
   }
 
   return operation === 'sqrt' ? serviceFunc(a) : serviceFunc(a, b);

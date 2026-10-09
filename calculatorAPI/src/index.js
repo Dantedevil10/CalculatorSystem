@@ -13,12 +13,12 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-// Rota de Health Check
+// Health Check route
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'API is working!' });
 });
 
-// Agrupamento de rotas sob o prefixo /api
+// Grouping of routes under the /api prefix
 app.use('/api', calculatorRoutes);
 
 if (process.env.NODE_ENV !== 'test') {
